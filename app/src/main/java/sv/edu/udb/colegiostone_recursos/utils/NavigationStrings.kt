@@ -1,4 +1,4 @@
-package sv.edu.udb.colegiostone_recursos.navigation
+package sv.edu.udb.colegiostone_recursos.utils
 
 class NavigationStrings {
     companion object{
@@ -11,5 +11,13 @@ class NavigationStrings {
         //
         const val ItemMenuTituloRecursos = "Recursos de aprendizaje"
         const val ItemMenuRouteRecursos = "recursos"
+        //
+        const val ItemMenuTituloRecursosForm = "Recursos de aprendizaje"
+        const val ItemMenuRouteRecursosForm = "recursos_form"
+        //
+        const val ActionCreate = "create"
+        const val ActionUpdate = "update"
+        //
+        const val DatabaseReference = "recursos"
     }
 }

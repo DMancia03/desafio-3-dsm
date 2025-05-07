@@ -8,19 +8,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import sv.edu.udb.colegiostone_recursos.components.login.ScreenLogin
 import sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje.ScreenRecursos
+import sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje.ScreenRecursosForm
 import sv.edu.udb.colegiostone_recursos.components.signup.ScreenSignup
-import sv.edu.udb.colegiostone_recursos.navigation.NavigationStrings
+import sv.edu.udb.colegiostone_recursos.utils.NavigationStrings
 import sv.edu.udb.colegiostone_recursos.ui.theme.ColegioStoneRecursosTheme
 
 class MainActivity : ComponentActivity() {
@@ -46,7 +48,7 @@ fun MainComponent() {
     ) { innerPadding ->
         NavHost (
             navController = navHostController,
-            startDestination = NavigationStrings.ItemMenuRouteLogin,
+            startDestination = NavigationStrings.ItemMenuRouteRecursos,
             modifier = Modifier.padding(innerPadding).padding(all = 10.dp)
         ) {
             composable(
@@ -71,6 +73,25 @@ fun MainComponent() {
                 NavigationStrings.ItemMenuRouteRecursos
             ) {
                 ScreenRecursos(
+                    modifier = Modifier,
+                    navHostController = navHostController
+                )
+            }
+
+            composable(
+                "${NavigationStrings.ItemMenuRouteRecursosForm}?action={action}&id={id}",
+                arguments = listOf(
+                    navArgument("action"){
+                        type = NavType.StringType
+                        defaultValue = NavigationStrings.ActionCreate
+                    },
+                    navArgument("id"){
+                        type = NavType.IntType
+                        defaultValue = 0
+                    }
+                )
+            ){
+                ScreenRecursosForm(
                     modifier = Modifier,
                     navHostController = navHostController
                 )
