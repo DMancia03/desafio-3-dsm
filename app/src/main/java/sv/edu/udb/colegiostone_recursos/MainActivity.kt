@@ -54,7 +54,7 @@ fun MainComponent() {
     ) { innerPadding ->
         NavHost (
             navController = navHostController,
-            startDestination = NavigationStrings.ItemMenuRouteRecursos,
+            startDestination = NavigationStrings.ItemMenuRouteLogin,
             modifier = Modifier.padding(innerPadding).padding(all = 10.dp)
         ) {
             composable(

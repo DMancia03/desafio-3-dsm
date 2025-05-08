@@ -63,14 +63,20 @@ fun ScreenRecursos(
             )
         }
 
-        LazyColumn {
-            items(recursos){ recurso ->
-                RecursoCard(
-                    recurso = recurso,
-                    navHostController = navHostController,
-                    db = db
-                )
+        if(recursos.count() > 0){
+            LazyColumn {
+                items(recursos){ recurso ->
+                    RecursoCard(
+                        recurso = recurso,
+                        navHostController = navHostController,
+                        db = db
+                    )
+                }
             }
+        }else{
+            Text(
+                text = "No hay recursos agregados..."
+            )
         }
     }
 }
