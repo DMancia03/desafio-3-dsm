@@ -11,6 +11,7 @@ class Strings {
         const val LabelImagen = "Imagen:"
         const val TextGuardar = "Guardar"
         const val TextCancelar = "Cancelar"
+        const val TextRegresar = "Regresar"
         const val ErrorTitulo = "Debe ingresar un titulo..."
         const val ErrorDescripcion = "Debe ingresar una descripción..."
         const val ErrorTipo = "Debe ingresar un tipo..."

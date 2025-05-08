@@ -1,7 +1,7 @@
 package sv.edu.udb.colegiostone_recursos.models
 
 class RecursoAprendizaje {
-    //var Key : String = ""
+    var Key : String? = null
     var Titulo : String = ""
     var Descripcion : String = ""
     var Tipo : String = ""
@@ -26,5 +26,15 @@ class RecursoAprendizaje {
         Tipo = _tipo
         Enlace = _enlace
         Imagen = _imagen
+    }
+
+    fun toMap() : Map<String, Any>{
+        return mapOf(
+            "Titulo" to Titulo,
+            "Descripcion" to Descripcion,
+            "Tipo" to Tipo,
+            "Enlace" to Enlace,
+            "Imagen" to Imagen
+        )
     }
 }

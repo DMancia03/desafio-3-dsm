@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.snapshots
@@ -32,13 +33,16 @@ fun ScreenRecursos(
 
         val recursos = remember { mutableStateListOf<RecursoAprendizaje>() }
 
-        val db = FirebaseDatabase.getInstance().getReference(NavigationStrings.DatabaseReference)
+        val db : DatabaseReference = FirebaseDatabase.getInstance().getReference(NavigationStrings.DatabaseReference)
 
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                recursos.clear()
+
                 for (item in snapshot.children){
                     val recurso : RecursoAprendizaje? = item.getValue(RecursoAprendizaje::class.java)
                     if(recurso != null){
+                        recurso.Key = item.key
                         recursos.add(recurso)
                     }
                 }
@@ -51,10 +55,6 @@ fun ScreenRecursos(
             }
         })
 
-        Text(
-            text = "Recursos de aprendizaje"
-        )
-
         Button({
             navHostController.navigate(NavigationStrings.ItemMenuRouteRecursosForm)
         }) {
@@ -66,7 +66,9 @@ fun ScreenRecursos(
         LazyColumn {
             items(recursos){ recurso ->
                 RecursoCard(
-                    recurso = recurso
+                    recurso = recurso,
+                    navHostController = navHostController,
+                    db = db
                 )
             }
         }

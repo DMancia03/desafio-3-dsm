@@ -2,7 +2,7 @@ package sv.edu.udb.colegiostone_recursos.utils
 
 class NavigationStrings {
     companion object{
-        const val NombreApp = "Colegio Stone - Recursos"
+        const val NombreApp = "Recursos de aprendizaje"
         const val ItemMenuTituloLogin = "Login"
         const val ItemMenuRouteLogin = "login"
         //
@@ -14,6 +14,9 @@ class NavigationStrings {
         //
         const val ItemMenuTituloRecursosForm = "Recursos de aprendizaje"
         const val ItemMenuRouteRecursosForm = "recursos_form"
+        //
+        const val ItemMenuTituloRecursosVer = "Recurso de aprendizaje"
+        const val ItemMenuRouteRecursosVer = "recursos_ver"
         //
         const val ActionCreate = "create"
         const val ActionUpdate = "update"

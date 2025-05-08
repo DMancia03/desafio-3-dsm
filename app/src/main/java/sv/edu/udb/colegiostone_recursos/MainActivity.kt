@@ -21,7 +21,10 @@ import androidx.navigation.navArgument
 import sv.edu.udb.colegiostone_recursos.components.login.ScreenLogin
 import sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje.ScreenRecursos
 import sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje.ScreenRecursosForm
+import sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje.ScreenVerRecurso
 import sv.edu.udb.colegiostone_recursos.components.signup.ScreenSignup
+import sv.edu.udb.colegiostone_recursos.components.top_bar.TopBar
+import sv.edu.udb.colegiostone_recursos.models.RecursoAprendizaje
 import sv.edu.udb.colegiostone_recursos.utils.NavigationStrings
 import sv.edu.udb.colegiostone_recursos.ui.theme.ColegioStoneRecursosTheme
 
@@ -44,7 +47,10 @@ fun MainComponent() {
     val navHostController : NavHostController = rememberNavController()
 
     Scaffold (
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopBar()
+        }
     ) { innerPadding ->
         NavHost (
             navController = navHostController,
@@ -79,19 +85,74 @@ fun MainComponent() {
             }
 
             composable(
-                "${NavigationStrings.ItemMenuRouteRecursosForm}?action={action}&id={id}",
+                "${NavigationStrings.ItemMenuRouteRecursosForm}?action={action}&key={key}&titulo={titulo}&descripcion={descripcion}&tipo={tipo}&enlace={enlace}&imagen={imagen}",
                 arguments = listOf(
                     navArgument("action"){
                         type = NavType.StringType
                         defaultValue = NavigationStrings.ActionCreate
                     },
-                    navArgument("id"){
-                        type = NavType.IntType
-                        defaultValue = 0
-                    }
+                    navArgument("key"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("titulo"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("descripcion"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("tipo"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("enlace"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("imagen"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
                 )
-            ){
+            ) {
                 ScreenRecursosForm(
+                    modifier = Modifier,
+                    navHostController = navHostController
+                )
+            }
+
+            composable(
+                "${NavigationStrings.ItemMenuRouteRecursosVer}?key={key}&titulo={titulo}&descripcion={descripcion}&tipo={tipo}&enlace={enlace}&imagen={imagen}",
+                arguments = listOf(
+                    navArgument("key"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("titulo"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("descripcion"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("tipo"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("enlace"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                    navArgument("imagen"){
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                )
+            ) {
+                ScreenVerRecurso(
                     modifier = Modifier,
                     navHostController = navHostController
                 )
