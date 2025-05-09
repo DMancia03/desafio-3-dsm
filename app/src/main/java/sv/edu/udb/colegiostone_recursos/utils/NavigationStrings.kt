@@ -22,5 +22,7 @@ class NavigationStrings {
         const val ActionUpdate = "update"
         //
         const val DatabaseReference = "recursos"
+        //
+        const val EndPointApi = "https://681d734df74de1d219afc9c3.mockapi.io/"
     }
 }

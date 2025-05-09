@@ -78,4 +78,10 @@ dependencies {
 
     //
     implementation("androidx.compose.material:material-icons-extended")
+
+    // Implementaciones de Retrofit ,Gson, recyclerview y okhttp
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.recyclerview)
+    implementation(libs.okhttp.logging.interceptor)
 }

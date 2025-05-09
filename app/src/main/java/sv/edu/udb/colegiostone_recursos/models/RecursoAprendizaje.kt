@@ -1,7 +1,7 @@
 package sv.edu.udb.colegiostone_recursos.models
 
 class RecursoAprendizaje {
-    var Key : String? = null
+    var Id : Int? = null
     var Titulo : String = ""
     var Descripcion : String = ""
     var Tipo : String = ""

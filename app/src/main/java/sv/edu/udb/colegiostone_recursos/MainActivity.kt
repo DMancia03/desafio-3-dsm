@@ -85,15 +85,15 @@ fun MainComponent() {
             }
 
             composable(
-                "${NavigationStrings.ItemMenuRouteRecursosForm}?action={action}&key={key}&titulo={titulo}&descripcion={descripcion}&tipo={tipo}&enlace={enlace}&imagen={imagen}",
+                "${NavigationStrings.ItemMenuRouteRecursosForm}?action={action}&id={id}&titulo={titulo}&descripcion={descripcion}&tipo={tipo}&enlace={enlace}&imagen={imagen}",
                 arguments = listOf(
                     navArgument("action"){
                         type = NavType.StringType
                         defaultValue = NavigationStrings.ActionCreate
                     },
-                    navArgument("key"){
-                        type = NavType.StringType
-                        defaultValue = ""
+                    navArgument("id"){
+                        type = NavType.IntType
+                        defaultValue = 0
                     },
                     navArgument("titulo"){
                         type = NavType.StringType
@@ -124,11 +124,11 @@ fun MainComponent() {
             }
 
             composable(
-                "${NavigationStrings.ItemMenuRouteRecursosVer}?key={key}&titulo={titulo}&descripcion={descripcion}&tipo={tipo}&enlace={enlace}&imagen={imagen}",
+                "${NavigationStrings.ItemMenuRouteRecursosVer}?id={id}&titulo={titulo}&descripcion={descripcion}&tipo={tipo}&enlace={enlace}&imagen={imagen}",
                 arguments = listOf(
-                    navArgument("key"){
-                        type = NavType.StringType
-                        defaultValue = ""
+                    navArgument("id"){
+                        type = NavType.IntType
+                        defaultValue = 0
                     },
                     navArgument("titulo"){
                         type = NavType.StringType

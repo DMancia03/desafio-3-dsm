@@ -1,7 +1,6 @@
 package sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.database.FirebaseDatabase
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import sv.edu.udb.colegiostone_recursos.models.RecursoAprendizaje
+import sv.edu.udb.colegiostone_recursos.service.RecursoApi
 import sv.edu.udb.colegiostone_recursos.utils.Strings
 import sv.edu.udb.colegiostone_recursos.utils.NavigationStrings
 
@@ -36,7 +41,7 @@ fun ScreenRecursosForm(
     ) {
         // Parametros de route
         var action : String? = NavigationStrings.ActionCreate
-        var keyToUpdate : String? = ""
+        var idToUpdate : Int? = 0
         var tituloDefault : String = ""
         var descripcionDefault : String = ""
         var tipoDefault : String = ""
@@ -45,7 +50,7 @@ fun ScreenRecursosForm(
 
         if(navHostController.currentBackStackEntry != null && navHostController.currentBackStackEntry?.arguments != null){
             action = navHostController.currentBackStackEntry!!.arguments!!.getString("action")
-            keyToUpdate = navHostController.currentBackStackEntry!!.arguments!!.getString("key")
+            idToUpdate = navHostController.currentBackStackEntry!!.arguments!!.getInt("id")
             tituloDefault = navHostController.currentBackStackEntry!!.arguments!!.getString("titulo") ?: ""
             descripcionDefault = navHostController.currentBackStackEntry!!.arguments!!.getString("descripcion") ?: ""
             tipoDefault = navHostController.currentBackStackEntry!!.arguments!!.getString("tipo") ?: ""
@@ -56,8 +61,13 @@ fun ScreenRecursosForm(
         // Context
         val context : Context = LocalContext.current
 
-        // Db
-        val db = FirebaseDatabase.getInstance().getReference(NavigationStrings.DatabaseReference)
+        // Retrofit
+        val retrofit = Retrofit.Builder()
+            .baseUrl(NavigationStrings.EndPointApi)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val api = retrofit.create(RecursoApi::class.java)
 
         // Variables de estado en formulario
         val (titulo, setTitulo) = remember { mutableStateOf(tituloDefault) }
@@ -174,46 +184,46 @@ fun ScreenRecursosForm(
 
                 val recurso = RecursoAprendizaje(titulo, descripcion, tipo, enlace, imagen)
 
-                if(action == NavigationStrings.ActionCreate){
-                    val newKey = db.push().key
+                var call : Call<RecursoAprendizaje>? = null
 
-                    if(newKey != null){
-                        db.child(newKey).setValue(recurso).addOnSuccessListener {
+                if(action == NavigationStrings.ActionCreate){
+                    call = api.CrearRecurso(recurso)
+                }else{
+                    call = api.ActualizarRecurso(idToUpdate!!, recurso)
+                }
+
+                call.enqueue(object : Callback<RecursoAprendizaje> {
+                    override fun onResponse(
+                        call: Call<RecursoAprendizaje>,
+                        response: Response<RecursoAprendizaje>
+                    ) {
+                        if(response.isSuccessful){
                             Toast.makeText(
                                 context,
                                 Strings.RecursoGuardado,
                                 Toast.LENGTH_SHORT
                             ).show()
-                        }.addOnFailureListener {
+                        }else{
                             Toast.makeText(
                                 context,
                                 Strings.RecursoIncompleto,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    }
-                }else{
-                    val recursoValue = recurso.toMap()
-                    val childUpdate = hashMapOf<String, Any>(
-                        keyToUpdate.toString() to recursoValue
-                    )
 
-                    db.updateChildren(childUpdate).addOnSuccessListener {
+                        navHostController.navigateUp()
+                    }
+
+                    override fun onFailure(call: Call<RecursoAprendizaje>, t: Throwable) {
                         Toast.makeText(
                             context,
-                            Strings.RecursoGuardado,
+                            Strings.RecursoErrorApi,
                             Toast.LENGTH_SHORT
                         ).show()
-                    }.addOnFailureListener {
-                        Toast.makeText(
-                            context,
-                            Strings.RecursoIncompleto,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
 
-                navHostController.navigateUp()
+                        navHostController.navigateUp()
+                    }
+                })
             }) {
                 Text(
                     text = Strings.TextGuardar

@@ -19,6 +19,22 @@ class Strings {
         const val ErrorImagen = "Debe ingresar un error..."
         const val RecursoGuardado = "Recurso guardado"
         const val RecursoIncompleto = "No se pudo guardar el recurso"
+        const val RecursoErrorApi = "Dio error al guardar el recurso en la api externa"
+        // Read All
+        const val MsgReadAllCompleto = "Se obtuvieron los recursos"
+        const val MsgReadAllIncompleto = "No se obtuvieron los recursos"
+        const val MsgReadAllError = "Dio error al obtener los recursos de la api externa"
+        const val TextNoRecursos = "No hay recursos agregados..."
+        const val BtnAgregar = "Agregar recurso"
+        const val LabelBuscarPorTitulo = "Busqueda por titulo"
+        // Read
+        const val BtnVer = "Ver"
+        const val BtnEditar = "Editar"
+        const val BtnEliminar = "Eliminar"
+        // Delete
+        const val MsgEliminarCompleto = "Recurso eliminado"
+        const val MsgEliminarIncompleto = "No se pudo eliminar el recurso"
+        const val MsgEliminarError = "Dio error al eliminar el recurso en la api externa"
         // Auth
         const val NombreColegio = "COLEGIO STONE"
         const val LabelUsername = "Nombre de usuario:"
