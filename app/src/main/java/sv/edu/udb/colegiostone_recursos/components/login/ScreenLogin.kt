@@ -41,6 +41,15 @@ fun ScreenLogin(
 
         val context = LocalContext.current
         val auth = FirebaseAuth.getInstance()
+        val authListener : FirebaseAuth.AuthStateListener
+
+        authListener = FirebaseAuth.AuthStateListener { auth ->
+            if(auth.currentUser != null){
+                navHostController.navigate(NavigationStrings.ItemMenuRouteRecursos)
+            }
+        }
+
+        auth.addAuthStateListener(authListener)
 
         Text(
             text = Strings.NombreColegio,
