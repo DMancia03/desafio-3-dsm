@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -131,8 +132,10 @@ fun ScreenRecursosForm(
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
                 onClick = {
@@ -232,7 +235,7 @@ fun ScreenRecursosForm(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFF00796B)
                 ),
-                modifier = Modifier.fillMaxWidth(0.6f)
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = Strings.TextGuardar,
@@ -247,7 +250,7 @@ fun ScreenRecursosForm(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFF00796B)
                 ),
-                modifier = Modifier.fillMaxWidth(0.6f)
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = Strings.TextCancelar,

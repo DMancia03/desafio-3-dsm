@@ -8,9 +8,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import sv.edu.udb.colegiostone_recursos.utils.NavigationStrings
@@ -21,7 +23,6 @@ fun ScreenVerRecurso(
     modifier: Modifier,
     navHostController: NavHostController
 ) {
-    // Parametros de route
     var keyToUpdate : String? = ""
     var tituloDefault : String = ""
     var descripcionDefault : String = ""
@@ -40,43 +41,55 @@ fun ScreenVerRecurso(
 
     Column(
         modifier = modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(
             text = tituloDefault,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Text(
-            text = descripcionDefault
+            text = descripcionDefault,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Text(
             text = "Tipo: ${tipoDefault}",
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Light,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Text(
             text = enlaceDefault,
-            color = Color.Blue
+            color = Color.Blue,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Text(
             text = imagenDefault,
-            color = Color.Blue
+            color = Color.Blue,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Button(
             onClick = {
-            navHostController.navigateUp()
-        },
+                navHostController.navigateUp()
+            },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFF00796B)
+                containerColor = Color(0xFF00796B)
             ),
             modifier = Modifier.fillMaxWidth(0.6f)
         ) {
             Text(
-                text = Strings.TextRegresar
+                text = Strings.TextRegresar,
+                color = Color.White
             )
         }
     }

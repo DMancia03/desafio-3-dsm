@@ -1,6 +1,7 @@
 package sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje
 
 import android.content.Context
+import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -46,6 +48,7 @@ fun RecursoCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 4.dp)
+                .wrapContentWidth(Alignment.CenterHorizontally)
         )
 
         Text(
@@ -53,6 +56,7 @@ fun RecursoCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 4.dp)
+                .wrapContentWidth(Alignment.CenterHorizontally)
         )
 
         Text(
@@ -60,6 +64,7 @@ fun RecursoCard(
             fontWeight = FontWeight.Light,
             modifier = Modifier
                 .fillMaxWidth()
+                .wrapContentWidth(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp)
         )
 
@@ -67,7 +72,7 @@ fun RecursoCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
                 onClick = {
