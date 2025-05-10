@@ -48,7 +48,7 @@ fun RecursoCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 4.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally)
         )
 
         Text(
