@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "500267755573",
+    "project_id": "desafio-3-dsm-9fee2",
+    "storage_bucket": "desafio-3-dsm-9fee2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500267755573:android:51a4815cd6df8c9486297c",
+        "android_client_info": {
+          "package_name": "sv.edu.udb.colegiostone_recursos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwKp4DraTRFfDmp4KpJqoiPeWMt2KjeIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
