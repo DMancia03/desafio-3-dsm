@@ -8,7 +8,9 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,8 +29,11 @@ fun ScreenSignup(
     navHostController: NavHostController
 ) {
     Column(
-        modifier = modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        modifier = modifier
+            .fillMaxHeight()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val (username, setUsername) = remember { mutableStateOf("") }
         val (pass, setPass) = remember { mutableStateOf("") }
@@ -40,14 +45,18 @@ fun ScreenSignup(
         Text(
             text = Strings.NombreColegio,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
         OutlinedTextField(
             value = username,
             onValueChange = { setUsername(it) },
             label = { Text(Strings.LabelUsername) },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp)
         )
 
         OutlinedTextField(
@@ -63,42 +72,63 @@ fun ScreenSignup(
                 IconButton(onClick = { setPassVisible(!passVisible) }) {
                     Icon(imageVector = image, contentDescription = description)
                 }
-            }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 20.dp)
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.Center
         ) {
-            Button(onClick = {
-                if (username.isBlank()) {
-                    Toast.makeText(context, Strings.ErrorUsername, Toast.LENGTH_SHORT).show()
-                    return@Button
-                }
-
-                if (pass.isBlank()) {
-                    Toast.makeText(context, Strings.ErrorPass, Toast.LENGTH_SHORT).show()
-                    return@Button
-                }
-
-                auth.createUserWithEmailAndPassword(username, pass)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(context, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show()
-                            navHostController.navigate(NavigationStrings.ItemMenuRouteRecursos)
-                        } else {
-                            Toast.makeText(context, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                        }
+            Button(
+                onClick = {
+                    if (username.isBlank()) {
+                        Toast.makeText(context, Strings.ErrorUsername, Toast.LENGTH_SHORT).show()
+                        return@Button
                     }
-            }) {
-                Text(text = Strings.TextSignUp)
+
+                    if (pass.isBlank()) {
+                        Toast.makeText(context, Strings.ErrorPass, Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+
+                    auth.createUserWithEmailAndPassword(username, pass)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(context, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show()
+                                navHostController.navigate(NavigationStrings.ItemMenuRouteRecursos)
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Error: ${task.exception?.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF00796B)
+                ),
+                modifier = Modifier.padding(bottom = 10.dp)
+            ) {
+                Text(text = Strings.TextSignUp, color = Color.White)
             }
 
-            Button(onClick = {
-                navHostController.navigate(NavigationStrings.ItemMenuRouteLogin)
-            }) {
-                Text(text = Strings.TextSiCuenta)
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Button(
+                onClick = {
+                    navHostController.navigate(NavigationStrings.ItemMenuRouteLogin)
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF00796B)
+                )
+            ) {
+                Text(text = Strings.TextSiCuenta, color = Color.White)
             }
         }
     }
 }
+

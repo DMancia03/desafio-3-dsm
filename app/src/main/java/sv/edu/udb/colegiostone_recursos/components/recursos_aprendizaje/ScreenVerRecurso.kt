@@ -3,7 +3,9 @@ package sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -64,9 +66,15 @@ fun ScreenVerRecurso(
             color = Color.Blue
         )
 
-        Button({
+        Button(
+            onClick = {
             navHostController.navigateUp()
-        }) {
+        },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFF00796B)
+            ),
+            modifier = Modifier.fillMaxWidth(0.6f)
+        ) {
             Text(
                 text = Strings.TextRegresar
             )

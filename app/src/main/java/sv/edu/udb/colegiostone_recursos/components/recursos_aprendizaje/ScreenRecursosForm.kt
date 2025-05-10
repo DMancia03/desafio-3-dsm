@@ -8,18 +8,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,7 +40,6 @@ fun ScreenRecursosForm(
         modifier = modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        // Parametros de route
         var action : String? = NavigationStrings.ActionCreate
         var idToUpdate : Int? = 0
         var tituloDefault : String = ""
@@ -58,10 +58,8 @@ fun ScreenRecursosForm(
             imagenDefault = navHostController.currentBackStackEntry!!.arguments!!.getString("imagen") ?: ""
         }
 
-        // Context
         val context : Context = LocalContext.current
 
-        // Retrofit
         val retrofit = Retrofit.Builder()
             .baseUrl(NavigationStrings.EndPointApi)
             .addConverterFactory(GsonConverterFactory.create())
@@ -69,7 +67,6 @@ fun ScreenRecursosForm(
 
         val api = retrofit.create(RecursoApi::class.java)
 
-        // Variables de estado en formulario
         val (titulo, setTitulo) = remember { mutableStateOf(tituloDefault) }
         val (descripcion, setDescripcion) = remember { mutableStateOf(descripcionDefault) }
         val (tipo, setTipo) = remember { mutableStateOf(tipoDefault) }
@@ -79,7 +76,8 @@ fun ScreenRecursosForm(
         Text(
             text = if (action == NavigationStrings.ActionCreate) Strings.TituloCrearRecurso else Strings.TituloEditarRecurso,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
@@ -88,7 +86,8 @@ fun ScreenRecursosForm(
             label = {
                 Text(Strings.LabelTitulo)
             },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
@@ -97,7 +96,8 @@ fun ScreenRecursosForm(
             label = {
                 Text(Strings.LabelDescripcion)
             },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
@@ -106,7 +106,8 @@ fun ScreenRecursosForm(
             label = {
                 Text(Strings.LabelTipo)
             },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
@@ -115,7 +116,8 @@ fun ScreenRecursosForm(
             label = {
                 Text(Strings.LabelEnlace)
             },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
@@ -124,117 +126,132 @@ fun ScreenRecursosForm(
             label = {
                 Text(Strings.LabelImagen)
             },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.Center
         ) {
-            Button({
-                if(titulo.isNullOrEmpty() || titulo.isNullOrBlank()){
-                    Toast.makeText(
-                        context,
-                        Strings.ErrorTitulo,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    return@Button
-                }
-
-                if(descripcion.isNullOrEmpty() || descripcion.isNullOrBlank()){
-                    Toast.makeText(
-                        context,
-                        Strings.ErrorDescripcion,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    return@Button
-                }
-
-                if(tipo.isNullOrEmpty() || tipo.isNullOrBlank()){
-                    Toast.makeText(
-                        context,
-                        Strings.ErrorTipo,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    return@Button
-                }
-
-                if(enlace.isNullOrEmpty() || enlace.isNullOrBlank()){
-                    Toast.makeText(
-                        context,
-                        Strings.ErrorEnlace,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    return@Button
-                }
-
-                if(imagen.isNullOrEmpty() || imagen.isNullOrBlank()){
-                    Toast.makeText(
-                        context,
-                        Strings.ErrorImagen,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    return@Button
-                }
-
-                val recurso = RecursoAprendizaje(titulo, descripcion, tipo, enlace, imagen)
-
-                var call : Call<RecursoAprendizaje>? = null
-
-                if(action == NavigationStrings.ActionCreate){
-                    call = api.CrearRecurso(recurso)
-                }else{
-                    call = api.ActualizarRecurso(idToUpdate!!, recurso)
-                }
-
-                call.enqueue(object : Callback<RecursoAprendizaje> {
-                    override fun onResponse(
-                        call: Call<RecursoAprendizaje>,
-                        response: Response<RecursoAprendizaje>
-                    ) {
-                        if(response.isSuccessful){
-                            Toast.makeText(
-                                context,
-                                Strings.RecursoGuardado,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }else{
-                            Toast.makeText(
-                                context,
-                                Strings.RecursoIncompleto,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        navHostController.navigateUp()
-                    }
-
-                    override fun onFailure(call: Call<RecursoAprendizaje>, t: Throwable) {
+            Button(
+                onClick = {
+                    if(titulo.isNullOrEmpty() || titulo.isNullOrBlank()){
                         Toast.makeText(
                             context,
-                            Strings.RecursoErrorApi,
+                            Strings.ErrorTitulo,
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        navHostController.navigateUp()
+                        return@Button
                     }
-                })
-            }) {
+
+                    if(descripcion.isNullOrEmpty() || descripcion.isNullOrBlank()){
+                        Toast.makeText(
+                            context,
+                            Strings.ErrorDescripcion,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@Button
+                    }
+
+                    if(tipo.isNullOrEmpty() || tipo.isNullOrBlank()){
+                        Toast.makeText(
+                            context,
+                            Strings.ErrorTipo,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@Button
+                    }
+
+                    if(enlace.isNullOrEmpty() || enlace.isNullOrBlank()){
+                        Toast.makeText(
+                            context,
+                            Strings.ErrorEnlace,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@Button
+                    }
+
+                    if(imagen.isNullOrEmpty() || imagen.isNullOrBlank()){
+                        Toast.makeText(
+                            context,
+                            Strings.ErrorImagen,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@Button
+                    }
+
+                    val recurso = RecursoAprendizaje(titulo, descripcion, tipo, enlace, imagen)
+
+                    var call : Call<RecursoAprendizaje>? = null
+
+                    if(action == NavigationStrings.ActionCreate){
+                        call = api.CrearRecurso(recurso)
+                    }else{
+                        call = api.ActualizarRecurso(idToUpdate!!, recurso)
+                    }
+
+                    call.enqueue(object : Callback<RecursoAprendizaje> {
+                        override fun onResponse(
+                            call: Call<RecursoAprendizaje>,
+                            response: Response<RecursoAprendizaje>
+                        ) {
+                            if(response.isSuccessful){
+                                Toast.makeText(
+                                    context,
+                                    Strings.RecursoGuardado,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }else{
+                                Toast.makeText(
+                                    context,
+                                    Strings.RecursoIncompleto,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            navHostController.navigateUp()
+                        }
+
+                        override fun onFailure(call: Call<RecursoAprendizaje>, t: Throwable) {
+                            Toast.makeText(
+                                context,
+                                Strings.RecursoErrorApi,
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            navHostController.navigateUp()
+                        }
+                    })
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF00796B)
+                ),
+                modifier = Modifier.fillMaxWidth(0.6f)
+            ) {
                 Text(
-                    text = Strings.TextGuardar
+                    text = Strings.TextGuardar,
+                    color = Color.White
                 )
             }
 
-            Button({
-                navHostController.navigateUp()
-            }) {
+            Button(
+                onClick = {
+                    navHostController.navigateUp()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF00796B)
+                ),
+                modifier = Modifier.fillMaxWidth(0.6f)
+            ) {
                 Text(
-                    text = Strings.TextCancelar
+                    text = Strings.TextCancelar,
+                    color = Color.White
                 )
             }
         }

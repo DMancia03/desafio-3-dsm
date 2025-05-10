@@ -1,28 +1,20 @@
 package sv.edu.udb.colegiostone_recursos.components.recursos_aprendizaje
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.snapshots
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +24,6 @@ import sv.edu.udb.colegiostone_recursos.models.RecursoAprendizaje
 import sv.edu.udb.colegiostone_recursos.service.RecursoApi
 import sv.edu.udb.colegiostone_recursos.utils.NavigationStrings
 import sv.edu.udb.colegiostone_recursos.utils.Strings
-import java.io.Console
 
 @Composable
 fun ScreenRecursos(
@@ -44,7 +35,6 @@ fun ScreenRecursos(
     ) {
         val context : Context = LocalContext.current
 
-        // Variables de estado en formulario
         val (titulo, setTitulo) = remember { mutableStateOf("") }
 
         val recursos = remember { mutableStateListOf<RecursoAprendizaje>() }
@@ -75,13 +65,7 @@ fun ScreenRecursos(
                             recursos.addAll(list)
                         }
                     }
-                }/*else{
-                    Toast.makeText(
-                        context,
-                        Strings.MsgReadAllIncompleto,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }*/
+                }
             }
 
             override fun onFailure(call: Call<List<RecursoAprendizaje>>, t: Throwable) {
@@ -97,10 +81,14 @@ fun ScreenRecursos(
             onClick = {
                 navHostController.navigate(NavigationStrings.ItemMenuRouteRecursosForm)
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF00796B)
+            )
         ) {
             Text(
-                text = Strings.BtnAgregar
+                text = Strings.BtnAgregar,
+                color = Color.White
             )
         }
 
@@ -111,7 +99,13 @@ fun ScreenRecursos(
                 Text(Strings.LabelBuscarPorTitulo)
             },
             singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF00796B),
+                unfocusedBorderColor = Color.Gray,
+                focusedLabelColor = Color(0xFF00796B),
+                unfocusedLabelColor = Color.Gray
+            )
         )
 
         if(recursos.count() > 0){
@@ -127,7 +121,8 @@ fun ScreenRecursos(
             }
         }else{
             Text(
-                text = Strings.TextNoRecursos
+                text = Strings.TextNoRecursos,
+                color = Color.Gray
             )
         }
     }
