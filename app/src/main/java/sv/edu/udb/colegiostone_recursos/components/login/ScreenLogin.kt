@@ -1,23 +1,13 @@
 package sv.edu.udb.colegiostone_recursos.components.login
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +17,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 import sv.edu.udb.colegiostone_recursos.utils.NavigationStrings
 import sv.edu.udb.colegiostone_recursos.utils.Strings
 
@@ -39,13 +30,12 @@ fun ScreenLogin(
         modifier = modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        // Variables
         val (username, setUsername) = remember { mutableStateOf("") }
         val (pass, setPass) = remember { mutableStateOf("") }
         val (passVisible, setPassVisible) = remember { mutableStateOf(false) }
 
-        // Contexto
         val context = LocalContext.current
+        val auth = FirebaseAuth.getInstance()
 
         Text(
             text = Strings.NombreColegio,
@@ -56,33 +46,23 @@ fun ScreenLogin(
         OutlinedTextField(
             value = username,
             onValueChange = { setUsername(it) },
-            label = {
-                Text(Strings.LabelUsername)
-            },
+            label = { Text(Strings.LabelUsername) },
             singleLine = true
         )
 
         OutlinedTextField(
             value = pass,
             onValueChange = { setPass(it) },
-            label = {
-                Text(Strings.LabelPass)
-            },
+            label = { Text(Strings.LabelPass) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = if(passVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (passVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                val image = if (passVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
+                val image = if (passVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                val description = if (passVisible) "Ocultar contraseña" else "Mostrar contraseña"
 
-                // Please provide localized description for accessibility services
-                val description = if (passVisible) "Hide password" else "Show password"
-
-                IconButton(
-                    onClick = {setPassVisible(!passVisible)}
-                ){
-                    Icon(imageVector  = image, description)
+                IconButton(onClick = { setPassVisible(!passVisible) }) {
+                    Icon(imageVector = image, contentDescription = description)
                 }
             }
         )
@@ -91,40 +71,50 @@ fun ScreenLogin(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Button({
-                if(username.isNullOrEmpty() || username.isNullOrBlank()){
-                    Toast.makeText(
-                        context,
-                        Strings.ErrorUsername,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
+            Button(onClick = {
+                if (username.isBlank()) {
+                    Toast.makeText(context, Strings.ErrorUsername, Toast.LENGTH_SHORT).show()
                     return@Button
                 }
 
-                if(pass.isNullOrEmpty() || pass.isNullOrBlank()){
-                    Toast.makeText(
-                        context,
-                        Strings.ErrorPass,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
+                if (pass.isBlank()) {
+                    Toast.makeText(context, Strings.ErrorPass, Toast.LENGTH_SHORT).show()
                     return@Button
                 }
 
-                navHostController.navigate(NavigationStrings.ItemMenuRouteRecursos)
+                auth.signInWithEmailAndPassword(username, pass)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
+                            navHostController.navigate(NavigationStrings.ItemMenuRouteRecursos)
+                        } else {
+                            val rawMessage = task.exception?.message ?: ""
+
+                            if (rawMessage.contains("")) {
+                                setUsername("")
+                                setPass("")
+                                Toast.makeText(
+                                    context,
+                                    "No existe una cuenta con este correo electrónico.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Error al iniciar sesión. Verifica tus credenciales.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
             }) {
-                Text(
-                    text = Strings.TextLogin
-                )
+                Text(text = Strings.TextLogin)
             }
 
-            Button({
+            Button(onClick = {
                 navHostController.navigate(NavigationStrings.ItemMenuRouteSignup)
             }) {
-                Text(
-                    text = Strings.TextNoCuenta
-                )
+                Text(text = Strings.TextNoCuenta)
             }
         }
     }
